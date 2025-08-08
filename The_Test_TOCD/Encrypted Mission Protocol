@@ -1,64 +1,70 @@
-# Encrypted Practices – TOCD
 
-This directory is part of the **Try Of Check Dogs (TOCD)** plan and contains all **encrypted practices** developed under the **Encrypted Mission Protocol**.
+# Encrypted Practices – Try Of Check Dogs (TOCD)
 
-Each file in this directory is a realistic simulation of receiving sensitive intelligence, in which you must **decrypt and execute the mission** following the specified procedure.
+This directory is part of the **Try Of Check Dogs (TOCD)** training plan and contains all **encrypted practices** created under the **Encrypted Mission Protocol**.
 
-> **Note:** The content is not visible in plain text. You must follow the decryption steps using `gpg` to access the instructions.
+Each file in this directory represents a realistic simulation of receiving sensitive intelligence, where you must **decrypt and execute the mission** by following the established procedure.
+
+> **Note:** The content is never provided in plain text. You must use `gpg` and follow the decryption steps to access the practice instructions.
 
 ---
 
-# Encrypted Mission Protocol
+## What is the Encrypted Mission Protocol?
 
 **Light Practice Format – Sensitive Intelligence Simulation**
 
-This protocol replaces the traditional delivery of practice instructions in plain text for **PBR** (Proof-of-Bounty-Readiness) and **PAD** (Attack and Defense Practices).  
-Instead, all instructions are delivered in **encrypted format** and can only be read if the proper steps are followed.
+The **Encrypted Mission Protocol** replaces the traditional delivery of instructions in plain text for:
+
+- **PBR** – Proof-of-Bounty-Readiness (Challenge-Based Practices)
+- **PAD** – Attack and Defense Practices
+
+Instead, all instructions are provided in **encrypted format** and require the proper decryption process to be read and executed.
 
 ---
 
 ## Objective
 
-Recreate the workflow of a real offensive cybersecurity environment, where orders and critical information **are never exposed directly**.  
-This protocol strengthens skills in:
+To replicate the workflow of a real offensive cybersecurity environment, where critical orders and information **are never directly exposed**.
+
+This protocol aims to strengthen skills in:
 
 - Secure handling of sensitive data.
-- Using **GnuPG** (`gpg`) for encryption and decryption.
-- Maintaining a secure workflow in a hacking lab environment.
+- Use of **GnuPG** (`gpg`) for encryption and decryption.
+- Maintaining a secure and traceable workflow in a hacking lab environment.
 
 ---
 
 ## Operational Procedure
 
-### 1. Receiving the mission
-- You will be provided with an encrypted data block in GPG (ASCII-armored) format.
-- Example block:
-    ```
-    -----BEGIN PGP MESSAGE-----
-    
-    hQGMA2kQkYX3h13wAQv+NgkzRvP6o1X8Mox+L6FZxkG41jk4zPUyDl7ff1uZ3TrB
-    ...
-    =0a1B
-    -----END PGP MESSAGE-----
-    ```
+1. **Receiving the Mission**
+    - You will receive an encrypted data block in GPG (ASCII-armored) format.
+    - Example:
+      ```
+      -----BEGIN PGP MESSAGE-----
+      
+      hQGMA2kQkYX3h13wAQv+NgkzRvP6o1X8Mox+L6FZxkG41jk4zPUyDl7ff1uZ3TrB
+      ...
+      =0a1B
+      -----END PGP MESSAGE-----
+      ```
 
-### 2. Creating the file in the VM
-- Save the message in a file inside your Kali virtual machine:
-    ```bash
-    nano mission.gpg
-    ```
-- Paste the encrypted block into the file and save.
+2. **Creating the File in the VM**
+    - Save the message into a file inside your Kali Linux virtual machine:
+      ```bash
+      nano mission.gpg
+      ```
+    - Paste the encrypted block into the file and save.
 
-### 3. Decrypting the mission
-- Run:
-    ```bash
-    gpg --decrypt mission.gpg
-    ```
-- If prompted, enter the password provided with the encrypted block.
+3. **Decrypting the Mission**
+    - Run:
+      ```bash
+      gpg --decrypt mission.gpg
+      ```
+    - If prompted, enter the password provided with the encrypted block.
 
-### 4. Reading and executing
-- Once decrypted, you will receive the complete practice instructions.
-- Execute the mission following the steps and document the results.
+4. **Reading and Executing**
+    - Once decrypted, you will receive the complete practice instructions.
+    - Execute the mission following the given steps and document the results.
 
 ---
 
@@ -70,20 +76,20 @@ nano mission.gpg
 
 # Decrypt
 gpg --decrypt mission.gpg
+````
 
-Expected output:
+**Expected output:**
 
+```
 Mission: Scan the internal network and document active hosts.
 Tools: nmap, netdiscover.
 Objective: Identify possible attack vectors.
+```
 
-Protocol Benefits
+---
 
-    Security: Prevents accidental exposure of instructions in insecure channels.
+## Benefits of the Protocol
 
-    Realism: Simulates how sensitive data is handled in real-world cybersecurity operations.
-
-    Operational discipline: Promotes safe and traceable handling of confidential information.
-
-
-Si quieres, puedo ahora también traducirte y estandarizar el **README individual para cada práctic
+* **Security:** Prevents accidental exposure of instructions through insecure channels.
+* **Realism:** Simulates the management of sensitive data in real-world cybersecurity operations.
+* **Operational Discipline:** Encourages secure and traceable handling of confidential information.
