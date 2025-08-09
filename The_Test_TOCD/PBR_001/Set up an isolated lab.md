@@ -1,5 +1,7 @@
 # PBR 001 
 
+This is a summary for context; Complete and definitive instructions are within the encrypted file.
+
     
     Set up an isolated lab with 3 VMs: Kali (Host-Only + NAT), Ubuntu (Host-Only) and Windows (Host-Only).
 
