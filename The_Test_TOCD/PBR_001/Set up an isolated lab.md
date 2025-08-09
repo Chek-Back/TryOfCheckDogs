@@ -1,4 +1,4 @@
-# PBR 001 
+# Generate encrypted PBR-001 weekend practice (Host-Only lab with Kali/Ubuntu/Windows)
 
 This is a summary for context; Complete and definitive instructions are within the encrypted file.
 
