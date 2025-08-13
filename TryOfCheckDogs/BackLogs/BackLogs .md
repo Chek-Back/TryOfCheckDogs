@@ -16,20 +16,6 @@ Ground rules
 
     OPSEC/Legal: isolated lab only, your own binaries or didactic samples; never third-party executables outside the lab.
 
-Suggested folder layout
-
-backlogs/
-  2026-W39/
-    B1-CLI-01/
-      README.md
-      run.sh | run.py | Makefile
-      evidence/
-        out.txt
-        screenshot_1.png
-        hash.txt
-    B2-TOOL-02/
-    ...
-
 Two-week cycle (template)
 
     Week A (4 h): 1 challenge from each category: CLI, Toolchain, C, ELF/PE.
