@@ -168,7 +168,7 @@ Bridge to Phase 3 and modules 8A/8B
 
     With B8 you finish with controlled in-memory execution.
 
-    8A will add realistic Initial Access (maldocs, LNK/HTA/JS, AMSI, LOLBins, WMI).
+    8A will add realistic Initial Access (maldocs, LNK/HTA/JS, AMSI, LOLBins, WMI)
 
     8B will measure your techniques via telemetry (Sysmon/ETW, YARA/Sigma, KQL).
 
