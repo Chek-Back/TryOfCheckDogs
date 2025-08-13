@@ -245,17 +245,15 @@ Acceptance: clear, reproducible comparison.
 Deliverables: short report.
 
 # PAD-lite (template)
-___
+-
 ## Challenge <ID> — <Title>
 ## Objective
-...
 ## Key steps
-- ...
 ## Evidence
-- out.txt / screenshot(s)
+out.txt / screenshot(s)
 ## Lessons
-- 3–5 bullets
-___
+3–5 bullets
+- 
 
 
 Control metrics (weekly)
