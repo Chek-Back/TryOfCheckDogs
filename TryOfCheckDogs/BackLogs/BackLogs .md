@@ -243,9 +243,10 @@ B8-ROP-03 · DEP awareness · M
 Task: document DEP’s impact on your PoC and a safe alternative.
 Acceptance: clear, reproducible comparison.
 Deliverables: short report.
-PAD-lite (template)
 
-# Challenge <ID> — <Title>
+# PAD-lite (template)
+___
+## Challenge <ID> — <Title>
 ## Objective
 ...
 ## Key steps
@@ -254,6 +255,8 @@ PAD-lite (template)
 - out.txt / screenshot(s)
 ## Lessons
 - 3–5 bullets
+___
+
 
 Control metrics (weekly)
 
