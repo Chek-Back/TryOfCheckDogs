@@ -246,16 +246,16 @@ Deliverables: short report.
 
 # PAD-lite (template)
 
-### Challenge <ID> — <Title>
-### Objective
-### Key steps
-### Evidence
-out.txt / screenshot(s)
-### Lessons
-3–5 bullets
+ ### Challenge <ID> — <Title>
+ ### Objective
+ ### Key steps
+ ### Evidence
+ out.txt / screenshot(s)
+ ### Lessons
+ 3–5 bullets
 
 
-Control metrics (weekly)
+# Control metrics (weekly)
 
     Challenges completed (target: 4/week)
 
@@ -265,7 +265,7 @@ Control metrics (weekly)
 
     “Signal vs noise” in PoCs (when applicable)
 
-Cycle close-out (biweekly)
+# Cycle close-out (biweekly)
 
     Wxx-summary.md with: what worked, what didn’t, next 4 challenges, and 1 automation idea for tooling.
 
