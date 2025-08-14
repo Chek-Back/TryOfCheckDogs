@@ -233,7 +233,7 @@ PAD
 
     Risk report and containment measures.
 
-F4 Extensions (optional but recommended)
+F4 Extensions 
 12A — macOS Internals + EndpointSecurity (1 week)
 
 Goal: understand macOS security pipeline and build minimal event PoCs via EndpointSecurity.
@@ -245,6 +245,27 @@ Goal: grasp common Linux defenses and lab evasion tactics.
 PBR: simulated detections and evasion; basic Falco/eBPF rules.
 PAD: findings report and adjustments.
 12C — Android ARM64 + basic Frida (1 week)
+
+12D — Hardware RE Basics (1–2 weeks)
+
+UART/JTAG/SWD with OpenOCD/Black Magic, CH341A for SPI flash, 8-channel logic analyzer.
+
+PBR: sample firmware dump/restore with verified rollback.
+PAD: safe wiring guide and risk checklist.
+
+12E — Bus Sniffers & Firmware Pipeline (1 week)
+
+Python decoders for UART/I²C/SPI, hashing/compare scripts, validation harness.
+
+PBR:reproducible `dump → verify → restore` pipeline in a VM.
+PAD: evidence and usage limits.
+
+12F — Glitching/FPGA Lite (1–2 weeks)
+
+ChipWhisperer-Lite or iCE40 for controlled PoCs.
+
+PBR: educational PoC with guaranteed rollback.
+PAD: risks and mitigations.
 
 Goal: introduce mobile surface with trivial hooking and evasion in a test app.
 PBR: simple hook; PAD: lab notes and risks.
