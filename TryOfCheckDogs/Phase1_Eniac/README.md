@@ -1,6 +1,3 @@
-Here’s a professional **Table of Contents** and **Executive Summary** ready to paste into your repo.
-
----
 
 # Phase 1 — Systems & Programming Fundamentals
 
