@@ -2,8 +2,6 @@ PLAN — Try Of Check Dogs (TOCD)
 
     Author: Denis Pérez
     Last updated: 2025-08-10
-    Language: EN
-    Format: First person
 
 1) Vision and goal
 
