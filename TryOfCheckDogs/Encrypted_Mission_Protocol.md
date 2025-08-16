@@ -1,83 +1,154 @@
-Encrypted Practices – Try Of Check Dogs (TOCD)
 
-This directory is part of the Try Of Check Dogs (TOCD) training plan and contains all encrypted practices created under the Encrypted Mission Protocol.
+# Encrypted Practices — TOCD · Encrypted Mission Protocol (EMP)
 
-Each file in this directory represents a realistic simulation of receiving sensitive intelligence, where you must decrypt and execute the mission by following the established procedure.
+> **Scope:** Training, **lab-only**.
+> **Objective:** Deliver practice instructions **exclusively in encrypted form**, simulating the handling of sensitive tasking.
 
-    Note: The content is never provided in plain text. You must use gpg and follow the decryption steps to access the practice instructions.
+## What is the Encrypted Mission Protocol?
 
-What is the Encrypted Mission Protocol?
+The **Encrypted Mission Protocol (EMP)** replaces plain-text handouts for:
 
-Light Practice Format – Sensitive Intelligence Simulation
+* **PBR** — reproducible labs (challenge-style where applicable)
+* **PAD** — analysis & documentation
 
-The Encrypted Mission Protocol replaces the traditional delivery of instructions in plain text for:
+All instructions ship **encrypted**. You must decrypt them inside your lab VM before reading or executing anything.
 
-    PBR – Proof-of-Bounty-Readiness (Challenge-Based Practices)
-    PAD – Attack and Defense Practices
+## Why (goals)
 
-Instead, all instructions are provided in encrypted format and require the proper decryption process to be read and executed.
-Objective
+* **Realism:** mirrors workflows where sensitive directives are never sent in clear.
+* **Discipline:** enforces a traceable, reproducible process for handling “intel”.
+* **Skill-building:** practice safe data handling and GnuPG usage.
 
-To replicate the workflow of a real offensive cybersecurity environment, where critical orders and information are never directly exposed.
+## Prerequisites
 
-This protocol aims to strengthen skills in:
+* A **dedicated lab VM** (e.g., Kali/Ubuntu) with `gnupg` installed.
+* Either:
 
-    Secure handling of sensitive data.
-    Use of GnuPG (gpg) for encryption and decryption.
-    Maintaining a secure and traceable workflow in a hacking lab environment.
+  * **Symmetric** mode: passphrase provided alongside the message; or
+  * **Asymmetric** mode: your TOCD keypair imported into the VM.
 
-Operational Procedure
+> **Never** decrypt or store outputs outside the lab VM.
 
-Receiving the Mission
+## Directory layout (suggested)
 
-    You will receive an encrypted data block in GPG (ASCII-armored) format.
-    Example:
+```
+encrypted/
+  EMP-YYYYWW-XX/
+    mission.asc        # ASCII-armored GPG payload
+    README.md          # your PAD summary after completion (never includes secrets)
+    evidence/          # logs, screenshots, hashes (no private keys/passphrases)
+.gitignore             # must exclude *.txt produced from decryption and secrets/
+```
 
-    -----BEGIN PGP MESSAGE-----
+> Add a **pre-commit** guard to prevent committing decrypted artifacts (see below).
 
-    hQGMA2kQkYX3h13wAQv+NgkzRvP6o1X8Mox+L6FZxkG41jk4zPUyDl7ff1uZ3TrB
-    ...
-    =0a1B
-    -----END PGP MESSAGE-----
+## Standard workflow
 
-Creating the File in the VM
+1. **Receive the mission**
+   You’ll get an **ASCII-armored** GPG block:
 
-    Save the message into a file inside your Kali Linux virtual machine:
+   ```
+   -----BEGIN PGP MESSAGE-----
+   ...
+   -----END PGP MESSAGE-----
+   ```
 
-    nano mission.gpg
+2. **Create the file in the VM**
 
-    Paste the encrypted block into the file and save.
+   ```bash
+   nano mission.asc
+   # paste the armored block, save
+   ```
 
-Decrypting the Mission
+3. **Decrypt inside the VM**
 
-    Run:
+   * **Symmetric** (passphrase prompt):
 
-    gpg --decrypt mission.gpg
+     ```bash
+     gpg --decrypt mission.asc > mission.txt
+     ```
 
-        If prompted, enter the password provided with the encrypted block.
+   * **Asymmetric** (after importing the provided public/private keys):
 
-    Reading and Executing
-        Once decrypted, you will receive the complete practice instructions.
-        Execute the mission following the given steps and document the results.
+     ```bash
+     gpg --import tocd.pub  # once, if needed
+     gpg --decrypt --output mission.txt mission.asc
+     ```
 
-Example Usage
+4. **Read & execute**
+   Open `mission.txt`, follow steps, and **document evidence** as you go.
 
-# Save the mission
-nano mission.gpg
+5. **Document (PAD)**
+   Write a short PAD (what/why/how, results, issues, mitigations) and store evidence (logs, screenshots, hashsets) under `evidence/`.
 
-# Decrypt
-gpg --decrypt mission.gpg
+## Example (expected decrypted content)
 
-Expected output:
-
-Mission: Scan the internal network and document active hosts.
+```
+Mission: Scan the lab subnet and document active hosts.
 Tools: nmap, netdiscover.
-Objective: Identify possible attack vectors.
+Objective: Identify potential attack surfaces.
+Deliverables: scan logs, host inventory CSV, short PAD (≤200 words).
+```
 
-Benefits of the Protocol
+## Validation & traceability
 
-    Security: Prevents accidental exposure of instructions through insecure channels.
+* Record environment info and hashes:
 
-    Realism: Simulates the management of sensitive data in real-world cybersecurity operations.
+  ```bash
+  date -Iseconds | tee evidence/start_time.txt
+  uname -a        | tee evidence/uname.txt
+  sha256sum mission.asc > evidence/mission.asc.sha256
+  ```
 
-    Operational Discipline: Encourages secure and traceable handling of confidential information.
+* Keep command logs:
+
+  ```bash
+  script -q -c "bash -l" evidence/session.typescript
+  # exit to stop recording
+  ```
+
+* Close with checksums of outputs and a brief PAD.
+
+## OPSEC / Legal
+
+* **Lab-only**; **benign** targets/datasets.
+* No decrypted content leaves the VM.
+* Never commit secrets, private keys, or passphrases.
+* Follow your program’s **consent** and **acceptable-use** rules.
+
+## Pre-commit guard (optional but recommended)
+
+`.git/hooks/pre-commit` (make executable):
+
+```bash
+#!/usr/bin/env bash
+# Block accidental commits of decrypted mission files or secrets
+if git diff --cached --name-only | grep -E '\.(txt|log)$' | grep -qi 'mission'; then
+  echo "Blocked: decrypted mission artifacts detected. Commit evidence to evidence/ only."
+  exit 1
+fi
+if git diff --cached --name-only | grep -qiE 'secrets|private|\.key$'; then
+  echo "Blocked: secret material detected."
+  exit 1
+fi
+```
+
+## Troubleshooting
+
+* **`gpg: decryption failed: No secret key`**
+  You tried asymmetric decryption without importing the key; either import the key or confirm the mission uses **symmetric** mode.
+
+* **`gpg: no valid OpenPGP data found`**
+  Ensure the armored block is intact (no missing header/footer, no wrapped lines cut).
+
+* **Passphrase issues**
+  Verify keyboard layout and whitespace. Passphrases are **case-sensitive**.
+
+---
+
+### Summary
+
+* Missions arrive **encrypted** (`*.asc`), never in clear.
+* Decrypt **inside** your lab VM, execute, and document.
+* Keep a **clean audit trail** (hashes, logs, PAD).
+* Protect secrets; commit **evidence and PAD only**, not decrypted instructions.
