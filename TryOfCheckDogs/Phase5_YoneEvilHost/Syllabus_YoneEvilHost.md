@@ -1,227 +1,207 @@
-PENSUM — Kernel, Firmware, UEFI/Boot — Blocks and Deliverables (v1.0)
 
-    Start: after completing Phase 4 and its Capstone
-    Planned dedication: 5 h/day (Mon–Sat)
-    Methodology: PBR (reproducible labs) + PAD (analysis and documentation)
-    Ethical scope: lab-only (VMs and virtual firmware with OVMF). No real hardware without vendor guides and verified backups.
-    Note: All exercises use benign payloads for training purposes.
+# SYLLABUS — Kernel, Firmware, UEFI/Boot — Blocks & Deliverables (v1.1)
 
-Pre-flight F5 (1 week)
+> **Start:** after completing Phase 4 + Capstone
+> **Time commitment:** 5 h/day (Mon–Sat)
+> **Methodology:** **PBR** (reproducible labs) + **PAD** (analysis & documentation)
+> **Ethical scope:** **lab-only** (VMs and virtual firmware with OVMF). No real hardware unless vendor guides and **verified backups** are in place.
+> **Note:** All exercises use **benign** payloads for training purposes.
 
-Goal: prepare a safe environment for kernel and firmware work.
+---
 
-Checklist
+## Pre-flight F5 (1 week)
 
-    Base VM snapshots (Windows/Linux) + clean OVMF images.
+**Goal:** prepare a safe, instrumented environment for kernel and firmware work.
 
-    WinDbg KD and symbols for Windows; dmesg, ftrace, kprobes for Linux; QEMU + OVMF/edk2 for UEFI.
+**Checklist**
 
-    Firmware tooling: UEFITool/UEFIExtract, CHIPSEC (analysis mode), sbctl/mokutil (Linux), fwupd (read-only).
+* Base VM snapshots (Windows/Linux) + clean OVMF images.
+* Debug stacks: WinDbg KD + symbols; Linux `dmesg`, `ftrace`, `kprobes`; QEMU + OVMF/edk2.
+* Firmware tools: UEFITool/UEFIExtract, CHIPSEC (**analysis mode**), sbctl/mokutil, fwupd (**read-only**).
+* Tested rollback & restoration policies (NVRAM/OVMF + VM).
 
-    Tested rollback and restoration policies.
+**PBR (pre-flight)**
 
-PBR
+* **PBR-BR.1:** Verify kernel debugging (Win/Linux) with a controlled “hello-world”.
+* **PBR-BR.2:** Bring up QEMU+OVMF and extract volumes with UEFITool.
+* **PBR-BR.3:** Risk register and recovery plan validated from a clean snapshot.
 
-    Verify kernel debugging (Win/Linux) with a controlled hello-world.
+**PAD**
 
-    Bring up QEMU+OVMF and extract volumes with UEFITool.
+* **PAD-BR:** Pre-flight report (risks, mitigations, rollback).
 
-    Risk document and recovery plan.
+**Success criteria**
 
-F5-B1 — Advanced Linux Kernel: LKMs, kprobes/ftrace, and telemetry
+* KD and kprobe/ftrace sessions reproducible; OVMF boot + volume extraction OK; rollback proven.
 
-Duration: 4 weeks
-Goal: understand the module lifecycle and practice non-intrusive instrumentation with kprobes/kretprobes/ftrace; expose metrics via /proc or /sys.
+---
 
-Content
+## F5-B1 — Linux Kernel (LKMs, kprobes/ftrace, telemetry)
 
-    Minimal Kbuild/Kconfig, symbols, versioning, module signing.
+**Duration:** 4 weeks · **Goal:** understand the LKM lifecycle and practice non-intrusive instrumentation with kprobes/kretprobes/ftrace; expose metrics via `/proc` or `sysfs`.
 
-    Core structures (task_struct, files_struct) at a high level; safe reads.
+**Content**
 
-    kprobes/kretprobes and ftrace for didactic instrumentation.
+* Minimal Kbuild/Kconfig; symbols/versioning; module signing (lab).
+* Core structs at high level (`task_struct`, `files_struct`): *safe reads only*.
+* kprobes/kretprobes, ftrace (didactic instrumentation).
+* Metric export (`seq_file` in `/proc`, `sysfs`).
+* Safety: avoid destructive hooks; pin to lab kernels.
 
-    Metric export (seq_file in /proc, sysfs).
+**PBR**
 
-    Safety: avoid destructive hooks; test against lab kernels.
+* **PBR-B1.1:** LKM exposing process info (PID/cmdline) via `/proc/demo_lkm`.
+* **PBR-B1.2:** Instrument one syscall with kprobes + controlled logging.
+* **PBR-B1.3:** Perf/stability snapshot (perf + trace samples).
 
-PBR
+**PAD**
 
-    LKM exposing process info (PID, cmdline) via /proc/demo_lkm.
+* **PAD-B1:** Module design, risks, test results, build guide.
 
-    Instrument a selected syscall with kprobes and controlled logging.
+**Success criteria**
 
-    Performance and stability report using perf/traces.
+* LKM loads/unloads cleanly (no oops); metrics reproducible across two lab kernels.
 
-PAD
+---
 
-    Module design, risks, test results, and build guide.
+## F5-B2 — Windows Kernel Fundamentals (WDM/WDF, IOCTL/IRP, callbacks)
 
-Success criteria
+**Duration:** 5 weeks · **Goal:** build a benign driver that logs process/image events and exposes a simple IOCTL; debug in KD.
 
-    LKM loads/unloads cleanly, no oops; reproducible metrics.
+**Content**
 
-F5-B2 — Windows Kernel fundamentals: WDM/WDF, IOCTL/IRP, and callbacks
+* Driver model (WDM/WDF high level); IRP lifecycle.
+* Symbolic devices/queues; lab security for device access.
+* Callbacks: `PsSetCreateProcessNotifyRoutineEx`, `PsSetLoadImageNotifyRoutine` (didactic logging).
+* IOCTL: minimal user→kernel interface; strict buffer validation.
+* Telemetry: DbgPrint/trace basics.
 
-Duration: 5 weeks
-Goal: build a benign driver that logs process/image events and exposes a simple IOCTL; debug in KD.
+**PBR**
 
-Content
+* **PBR-B2.1:** Driver logging process/image creations to debugger.
+* **PBR-B2.2:** Userland client invoking an IOCTL (counter/state).
+* **PBR-B2.3:** Deploy/rollback script validated in VM.
 
-    Driver model (WDM/WDF at a high level) and the IRP lifecycle.
+**PAD**
 
-    Symbolic devices and queues; access security in lab.
+* **PAD-B2:** Architecture, IRP flow, IOCTL security, tests.
 
-    Callbacks: PsSetCreateProcessNotifyRoutineEx, PsSetLoadImageNotifyRoutine (didactic logging).
+**Success criteria**
 
-    IOCTL: minimal user-to-kernel interface; buffer validation.
+* Stable driver (no bugcheck); IOCTL verified; clean uninstall/rollback.
 
-    Telemetry: debugger messages and basic event tracing.
+---
 
-PBR
+## F5-B3 — “Rootkit” Techniques in Lab (safe & detectable)
 
-    Driver that logs process/image creations and emits to the debugger.
+**Duration:** 5 weeks · **Goal:** study historical/modern **hiding/monitoring** patterns and implement **benign, reversible, and detectable** PoCs in VM; emphasize **blue-side** detection.
 
-    Userland client consuming an IOCTL and receiving a counter/state.
+**Content**
 
-    Deployment/rollback script with VM tests.
+* **Linux:** didactic syscall/event filtering via kprobes/ftrace (no patching tables).
+* **Windows:** process/image/registry callbacks; minifilter **concept** (logging) — no stealth file hiding.
+* Modern constraints (PatchGuard, control-flow) and **pedagogical limits**.
+* Blue validation mindset: detect your own PoCs.
 
-PAD
+**PBR**
 
-    Architecture, IRP flow, IOCTL security, and test results.
+* **PBR-B3.1:** Linux PoC: selective log of `open/exec` via kprobes; on/off through `sysfs`.
+* **PBR-B3.2:** Windows PoC: non-disruptive registry/log filter toggled via IOCTL.
+* **PBR-B3.3:** Blue validation: YARA/Sigma + KQL to detect your PoCs.
 
-Success criteria
+**PAD**
 
-    Stable driver, no bugcheck; IOCTL functional and verified.
+* **PAD-B3:** Full doc, risks, and **rollback guide**.
 
-F5-B3 — Lab rootkit techniques (safe, multi-OS)
+**Success criteria**
 
-Duration: 5 weeks
-Goal: study historical and modern patterns for hiding/monitoring in userland/kernel, implementing benign and easily reversible PoCs in VM.
+* PoCs are **reversible** and **measurably detectable** by your rules; no functional disruption.
 
-Content
+---
 
-    Linux: didactic syscall interception with kprobes/ftrace; demonstrate event filtering without altering functional behavior.
+## F5-B4 — UEFI Internals & Firmware Analysis (OVMF/QEMU)
 
-    Windows: process/image/registry callbacks, minimal filters (minifilter concept) for controlled logging.
+**Duration:** 4 weeks · **Goal:** understand UEFI architecture (PEI/DXE/RT), analyze volumes/modules in OVMF, and instrument a benign DXE that logs an event.
 
-    Modern considerations (PatchGuard, control flow) and pedagogical limits.
+**Content**
 
-    Anti-analysis and detection: how to identify your own PoCs from the blue side.
+* UEFI phases, services, protocols; Secure Boot (high level).
+* Tools: UEFITool/UEFIExtract, CHIPSEC (analysis), edk2 build.
+* QEMU + OVMF boot; lab NVRAM variables; backups and restore.
 
-PBR
+**PBR**
 
-    Linux PoC that selectively logs open/exec via kprobes with on/off toggles through sysfs.
+* **PBR-B4.1:** Extract/inventory DXE modules in OVMF + dependency map.
+* **PBR-B4.2:** Build a benign DXE that logs at boot in QEMU.
+* **PBR-B4.3:** Secure Boot state report (keys, observed paths).
 
-    Windows PoC that applies a non-disruptive registry/log filter with IOCTL toggles.
+**PAD**
 
-    Blue validation: YARA/Sigma rules and KQL queries to detect your PoCs.
+* **PAD-B4:** Step-by-step write-up with screenshots, risks, recovery.
 
-PAD
+**Success criteria**
 
-    Documentation, risks, and full rollback guide.
+* DXE logs at boot; VM stable; NVRAM/OVMF rollback verified.
 
-Success criteria
+---
 
-    Reversible, measurable PoCs detectable by your own rules.
+## F5-B5 — Bootflow & Bootkit Practices (educational, VM-only)
 
-F5-B4 — UEFI internals and firmware analysis (OVMF/QEMU)
+**Duration:** 5 weeks · **Goal:** explore bootflow in VM and build a **harmless** module that modifies a benign boot parameter (banner/log), demonstrating Secure Boot mitigations and **blue** verification.
 
-Duration: 4 weeks
-Goal: understand UEFI architecture (PEI/DXE/RT), analyze volumes and modules in OVMF, and instrument a benign DXE that logs an event.
+**Content**
 
-Content
+* Bootflow: firmware→OS hand-off; historical hook points (conceptual).
+* edk2 project structure; **lab** signing/notarization.
+* Secure Boot chain of trust; effects of on/off.
+* Blue evaluation: verify integrity and detect changes.
 
-    UEFI architecture: phases, services, protocols; high-level Secure Boot.
+**PBR**
 
-    Tools: UEFITool/UEFIExtract, chipsec_util (analysis mode), edk2 build.
+* **PBR-B5.1:** Harmless DXE/boot module that shows a banner/logs in DXE.
+* **PBR-B5.2:** Measure impact with Secure Boot on/off; document differences.
+* **PBR-B5.3:** Provisioning & restoration script for NVRAM/OVMF.
 
-    Boot flow in QEMU with OVMF; lab NVRAM variables.
+**PAD**
 
-    Safety: limits, NVRAM backups, guaranteed rollback.
+* **PAD-B5:** Risk report, mitigations, recovery procedure.
 
-PBR
+**Success criteria**
 
-    Extract and inventory DXE modules in OVMF and map dependencies.
+* Module loads **only** in lab; Secure Boot blocks as expected; guaranteed recovery.
 
-    Build a benign DXE driver that logs a message during boot in QEMU.
+---
 
-    Secure Boot report: VM state, keys, and observed execution paths.
+## F5-CAP — Final Capstone (kernel + firmware + blue defense)
 
-PAD
+**Duration:** 3 weeks · **Goal:** integrate skills in VM: kernel telemetry (Linux **or** Windows) + benign DXE; add blue evaluation and a technical defense.
 
-    Write-up with steps, screenshots, and risks.
+**Activities**
 
-Success criteria
+* Choose Route A (Linux LKM + benign DXE) or Route B (Windows driver + benign DXE).
+* Run stability/perf/detectability tests with your blue dashboard.
+* Prepare docs, build & rollback scripts, and the defense.
 
-    DXE loads and logs at boot; VM remains stable; rollback verified.
+**Deliverables**
 
-F5-B5 — Bootflow and bootkit practices in VM (educational)
+* `capstone-f5/` repo: code, scripts, reproducible README, evidence, and presentation.
+* Applied & signed OPSEC/Legal checklist.
 
-Duration: 5 weeks
-Goal: explore the full bootflow in a virtual environment and build an educational module that modifies a benign boot parameter (e.g., 
-log telemetry or display a banner), demonstrating Secure Boot mitigations.
+**Success criteria**
 
-Content
+* Reproducible demo (no bricking), clear metrics/findings, convincing defense.
 
-    Bootflow: firmware to OS hand-off; study of hook points (historical view).
+---
 
-    edk2: project structure, build, and signing for lab environments.
+## Phase 5 — Grading rubric
 
-    Secure Boot and trust chains; effects of enabling/disabling policies.
+* **A:** All PBR/PAD complete; stable, reversible PoCs; functional benign DXE; strong Capstone with blue validation and flawless rollback.
+* **B:** ≥80% PBR/PAD; one unstable area but documented; functional Capstone.
+* **C:** ≥60% PBR/PAD; partial reproducibility or weak blue validation.
+* **Redo:** <60% or operational risk (no proven rollback).
 
-    Blue evaluation: detecting changes and verifying integrity.
+---
 
-PBR
+## Dependencies & suggested order
 
-    Build a harmless boot module that shows a banner/logs in DXE.
-
-    Measure impact with Secure Boot on/off and document differences.
-
-    Provisioning and restoration script for NVRAM/OVMF.
-
-PAD
-
-    Risk report, mitigations, and recovery procedure.
-
-Success criteria
-
-    Module loads only in the lab context; Secure Boot blocks execution when it should; recovery guaranteed.
-
-F5-CAP — Final Capstone: Kernel/firmware chain with technical defense
-
-Duration: 3 weeks
-Goal: integrate skills in a VM scenario: kernel telemetry (Linux or Windows) + benign boot component in OVMF; blue evaluation and technical defense.
-
-Activities
-
-    Choose Route A (Linux LKM + benign DXE) or Route B (Windows driver + benign DXE).
-
-    Run stability, performance, and detectability tests using your blue dashboard.
-
-    Prepare documentation, build and rollback scripts, and the technical defense.
-
-Deliverables
-
-    capstone-f5/ repo with code, scripts, reproducible README, evidence, and presentation.
-
-    Applied and signed OPSEC/Legal checklist.
-
-Success criteria
-
-    Reproducible VM demonstration, no bricking; clear metrics and findings; convincing defense.
-
-Phase 5 — Grading rubric
-
-    A: PBR/PAD complete; stable, reversible PoCs; functional benign DXE; strong Capstone with blue validation and flawless rollback.
-
-    B: ≥80% PBR/PAD; one unstable component but documented; functional Capstone.
-
-    C: ≥60% PBR/PAD; partial reproducibility or weak blue validation.
-
-    Redo: <60% or operational risk (no proven rollback).
-
-Outcome
-
-Phase 5 closes TOCD with skills in kernel observability and development (Linux/Windows) and operational understanding of UEFI/bootflow in virtual labs, 
-plus a Capstone that integrates kernel + firmware with defensive validation, professional documentation, and safe recovery.
+Pre-flight → **B1 (Linux)** → **B2 (Windows)** → **B3 (Lab “rootkit” patterns, detectable)** → **B4 (UEFI)** → **B5 (Bootflow)** → **F5-CAP**.
