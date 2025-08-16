@@ -66,9 +66,13 @@ Linux kernel (LKMs, kprobes/ftrace), Windows kernel (callbacks, IOCTL/IRP), lab-
 ## 3) Blocks by phase (brief list)
 
 **F1:** B1 Linux/CLI · B2 Toolchain/Debugging · B3 Systems C I · B4 x86\_64/ABI/asm · B5 ELF/PLT/GOT/`LD_PRELOAD` · *(minimal OPSEC)*
+
 **F2:** B6 Reversing/Unpack · B7 PE/In-memory loaders · B8 Userland injection & mitigations
+
 **F3:** B1 Userland internals · B2 Basic ROP exploit · B3 Windows Internals (MM/OBJ/ETW/APC) · B4 Userland exploit II (info-leak + ROP/JOP Win/Linux) · B5 Heap exploitation (LFH vs glibc) · B6 Kernel/driver & elevation · **CAP F3**
+
 **F4:** **8A** Initial Access · **8B** Blue Track · B1 Evasion I · B2 Evasion II · **9B** Crypto/Packer v2 · B3 Persistence (Win/Linux/macOS) · B4 C2 & traffic profile · B5 Covert operations · **CAP F4** · *(Extensions: 12A macOS, 12B Linux EDR/eBPF, 12C Android/Frida)*
+
 **F5:** Pre-flight · B1 Linux kernel (LKMs/kprobes) · B2 Windows kernel (IOCTL/IRP/callbacks) · B3 Benign rootkit-style PoCs (lab) · B4 UEFI/OVMF (DXE) · B5 Bootflow & Secure Boot · **CAP F5**
 
 ---
