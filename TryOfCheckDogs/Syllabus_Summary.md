@@ -1,4 +1,4 @@
-# PENSUM — TOCD · Master Overview (Phases & Quarters)
+# SYLLABUS — TOCD · Master Overview (Phases & Quarters)
 
 > **Base timeline:** start **2025-08-14** · estimated finish **2029-12-03** (base) / **2030-01-18 → 2030-02-03** (with add-on modules)
 > **Cross-cutting methodology:** **PBR** (reproducible labs) + **PAD** (analysis & documentation) · OPSEC/Legal applied · Blue validation (8B) where applicable
