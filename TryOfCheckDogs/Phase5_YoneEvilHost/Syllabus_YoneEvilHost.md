@@ -221,22 +221,6 @@ Phase 5 — Grading rubric
 
     Redo: <60% or operational risk (no proven rollback).
 
-Dependencies and suggested order
-
-    Pre-flight F5
-
-    F5-B1 (Linux)
-
-    F5-B2 (Windows)
-
-    F5-B3 (benign rootkit PoCs)
-
-    F5-B4 (UEFI)
-
-    F5-B5 (Bootflow/edk2 + Secure Boot)
-
-    F5-CAP
-
 Outcome
 
 Phase 5 closes TOCD with skills in kernel observability and development (Linux/Windows) and operational understanding of UEFI/bootflow in virtual labs, 
