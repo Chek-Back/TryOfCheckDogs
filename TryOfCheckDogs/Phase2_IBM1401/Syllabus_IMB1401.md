@@ -1,5 +1,5 @@
 
-# PENSUM — Applied Analysis & RCE (Phase 2) — Blocks & Deliverables
+# SYLLABUS — Applied Analysis & RCE (Phase 2) — Blocks & Deliverables
 
 > **Estimated coverage:** \~03/2026 → \~07/2026 *(adjust to Phase 1 finish)*
 > **Time commitment:** 5 h/day (Mon–Sat)
@@ -134,16 +134,3 @@ Consolidate applied reversing and first userland execution paths. You’ll analy
 * **B:** ≥80% PBR/PAD; one unstable technique or limited parser; documentation sufficient.
 * **C:** ≥60% PBR/PAD; partial reproducibility.
 * **Redo:** <60% or severe instability in loaders/injection.
-
----
-
-### OPSEC/Legal (always)
-
-Lab-only, benign payloads, explicit consent for targets in controlled environments, and evidence handling with minimal metadata. Telemetry is for **measurement**, not for evading real-world defenses.
-
-**Key fixes made**
-
-* Replaced “sections vs segments” under PE with PE-correct **sections** (kept ELF contrast separate).
-* Standardized codes (**0B04/1B04/2B04**) and **PBR/PAD** numbering.
-* Clarified module order: **Phase 3** comes after B8; **8A/8B** are a pre-flight to Phase 4.
-* Tightened goals/success criteria; reiterated **lab-only** scope.
