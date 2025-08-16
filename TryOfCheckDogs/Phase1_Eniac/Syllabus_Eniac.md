@@ -1,245 +1,195 @@
-PENSUM — Fundamentals — Blocks and Deliverables
 
-    Coverage: 2025-08-14 → ~02/2026
-    Planned dedication: 5 h/day (Mon–Sat)
-    Methodology: PBR (reproducible labs) + PAD (analysis and documentation)
+# SYLLABUS — Fundamentals (Phase 1) — Blocks & Deliverables
 
-Vision
+> **Coverage:** 2025-08-14 → 2026-02-07
+> **Time commitment:** 5 h/day (Mon–Sat)
+> **Methodology:** **PBR** (reproducible labs) + **PAD** (analysis & documentation) · OPSEC/Legal applied
 
-Build low-level fluency in Linux/CLI, systems C, x86_64/ABI and binary formats (ELF/PE) using a professional toolchain (Git, Make/CMake, debuggers and profilers). Phase 1 outcomes include in-house utilities, mastery of C memory and pointers, practical understanding of linking/loading, and basic binary analysis skills.
+## Vision
 
-Phase 1 global deliverables
+Build low-level fluency in Linux/CLI, professional toolchains (Git, Make/CMake, debuggers/profilers), Systems C (memory, pointers, I/O), x86\_64/ABI & practical assembly, and linking/loading with ELF (plus high-level PE parallels). Outcomes include in-house utilities, disciplined debugging, and basic binary analysis.
 
-    8–12 PBRs completed with their corresponding PADs
+## Phase 1 — Global Deliverables
 
-    1 system utility in C with a generic Makefile and local CI
+* **12–15 PBRs** completed with their corresponding **PADs**
+* **1** system utility in C with a generic Makefile and local CI
+* **1** custom **hexdump** (optional: patcher feature)
+* **1** userland hooking demo via **LD\_PRELOAD**
+* Lab logbook + minimal OPSEC checklist applied
 
-    1 simple hexdump/patcher
+---
 
-    1 userland hooking demo (LD_PRELOAD)
+## 0B01 — Linux/CLI/Bash & Ecosystem
 
-    Lab logbook and minimal OPSEC checklist
+**Duration:** 6 weeks · **Goal:** console fluency; file/text pipelines; permissions/processes; safe lab ops.
 
-Block 1 — Linux/CLI/Bash and ecosystem
+**Content**
 
-Duration: 6 weeks
-Goal: operate confidently in the console, manipulate files/text, manage permissions and processes, and work safely in an isolated lab.
+* FHS & permissions: `chmod/chown/chgrp`, `umask`, **ACLs**
+* Text flow: pipes, redirection, `grep`, regex (basic), `sed/awk`, `cut/sort/uniq/tr/wc`
+* File management: `find`, `xargs`, `tar`, `gzip/xz`, `rsync`
+* Processes & signals: `ps`, `top/htop`, `kill`, `nice/renice`, `nohup`, jobs (`bg/fg`)
+* Basic networking: `ip` addr/route, `ss`, `ping`, `traceroute`, `/etc/hosts`, DNS
+* Packaging (Debian/Ubuntu): repos, `apt`, `dpkg`
+* Lab hygiene: snapshots; users/groups; minimal OPSEC hygiene (metadata, timestamps; **PDB/RSDS** mentioned conceptually only)
 
-Content
+**PBR**
 
-    FHS and permissions: chmod/chown/chgrp, umask, ACLs
+* **PBR-0.1:** Incremental backup script with verification + rotating logs
+* **PBR-0.2:** Log-processing pipeline → normalized CSV
+* **PBR-0.3:** Collaborative permissions lab (project/group) with ACLs + tests
 
-    Text flow: pipes, redirection, grep, basic regex, sed, awk, cut, sort, uniq, tr, wc
+**PAD**
 
-    File management: find, xargs, tar, gzip, rsync
+* **PAD-0:** VM FHS map, permission tables, pipeline diagrams
 
-    Processes and signals: ps, top/htop, kill, nice/renice, nohup, jobs/bg/fg
+**Success criteria**
 
-    Basic networking: ip addr/route, ss, ping, traceroute, /etc/hosts, DNS
+* Scripts use `set -Eeuo pipefail`, include comments, and handle errors
+* **Reproducibility:** `make lab-b1` provisions sample data and executes pipelines cleanly
 
-    Packaging (Debian/Ubuntu): repos, apt, dpkg
+---
 
-    Lab hygiene: snapshots, users/groups, minimal OPSEC hygiene (metadata, timestamps; PDB/RSDS on Windows only conceptually)
+## 1B01 — Toolchain, Debugging & Version Control
 
-PBR
+**Duration:** 4 weeks · **Goal:** compile/link/debug professionally; instrument diagnostics; measure performance.
 
-    Incremental backup script with verification and rotating logs
+**Content**
 
-    Log-processing pipeline with filters and CSV summary
+* Git & workflow: branches, local PRs, hooks, semantic tagging
+* Make/CMake: targets, deps, variables, reusable templates
+* Compilers: `gcc/clang`, `-O{0,1,2,3}`, `-g`, `-Wall -Wextra -Werror`, LTO
+* Sanitizers: Address/Undefined/Leak (`-fsanitize=*`) + assertions
+* Debugging & tracing: `gdb/lldb`, `strace/ltrace`, core dumps
+* Profiling: `perf`, `time`, basic counters
+* Binutils: `readelf`, `objdump`, `nm`, `strings`
 
-    Collaborative permissions lab (project/group) with ACLs and test cases
+**PBR**
 
-PAD
+* **PBR-1.1:** Generic Makefile template (build/test/clean/asan/ubsan)
+* **PBR-1.2:** Memory-bug hunt in C using **ASan** + `gdb`/core dump
+* **PBR-1.3:** Micro-benchmark: `memcpy/memmove` vs custom
 
-    Report including the VM’s FHS layout, permission tables, and pipeline flow diagrams
+**PAD**
 
-Success criteria
+* **PAD-1:** Failure report (traces, root cause, documented fix) + quick build-template guide
 
-    Scripts use set -Eeuo pipefail, are commented, and handle errors
+**Success criteria**
 
-    Reproducibility: make lab-b1 provisions sample data and executes pipelines
+* Warning-free builds (`-Wall -Wextra -Werror`)
+* **Reproducibility:** `make asan` runs tests and **fails** on UB as expected
 
-Block 2 — Toolchain, debugging, and version control
+---
 
-Duration: 4 weeks
-Goal: compile, link, and debug professionally; instrument diagnostics and measure performance.
+## 2B01 — Systems C I: Memory, Pointers & I/O
 
-Content
+**Duration:** 8 weeks · **Goal:** master memory & pointers, low-level I/O, and safe patterns in C.
 
-    Git and workflow: branches, local PRs, hooks, semantic tagging
+**Content**
 
-    Make/CMake: targets, dependencies, variables, reusable templates
+* Pointers & arithmetic; `const`/`restrict`; function pointers
+* Structs/unions/bitfields; alignment & padding
+* Dynamic memory: `malloc/calloc/realloc/free`; ownership; simple arenas
+* Errors & `errno`; function contracts & pre/postconditions
+* I/O: stdio vs syscalls (`open/read/write`), buffers, `mmap`
+* Binary files & safe parsing
+* Intro to TCP/UDP sockets; blocking vs non-blocking
+* Security: bounds, off-by-one, format, double-free, UAF; mitigations
 
-    Compilers: gcc/clang, -O{0,1,2,3}, -g, -Wall -Wextra -Werror, LTO
+**PBR**
 
-    Sanitizers: Address/UB/Leak; -fsanitize and assertions
+* **PBR-2.1:** Custom **hexdump** (offset + ASCII)
+* **PBR-2.2:** Safe mini-strings library (subset) with tests
+* **PBR-2.3:** Mini binary viewer (header + first sections) using `mmap`
 
-    Debugging and tracing: gdb/lldb, strace/ltrace, core dumps
+**PAD**
 
-    Profiling: perf, time, basic counters
+* **PAD-2:** Function specs & contracts; test cases; threat report + mitigations
 
-    Binary utilities: readelf, objdump, nm, strings
+**Success criteria**
 
-PBR
+* Automated tests cover common failures/edges
+* Sanitizers clean; `valgrind` shows **no leaks** in planned scenarios
 
-    Generic Makefile template with build/test/clean/asan/ubsan targets
+---
 
-    Memory-bug hunt in C using ASan and gdb with core dump
+## 4B01 — x86\_64/ABI & Practical Assembly
 
-    Micro-benchmark comparing memcpy/memmove vs custom versions
+**Duration:** 4 weeks · **Goal:** understand function calls/stack behavior and invoke syscalls.
 
-PAD
+**Content**
 
-    Failure report with traces, root cause, and documented fix
+* Registers & SysV x86\_64 calling convention; prologue/epilogue; nested calls
+* Stack frames; spill/fill; callee/caller preservation
+* System calls: numbers, `syscall`, error paths, `errno`
+* Inline asm in C; C ↔ asm integration
+* Windows x64 ABI vs SysV (conceptual contrasts)
 
-    Quick guide to your build template
+**PBR**
 
-Success criteria
+* **PBR-4.1:** `memset/memcmp` in asm with cross-tests vs C
+* **PBR-4.2:** Minimal syscall wrappers (`write`, `getpid`) without libc
+* **PBR-4.3:** Mixed C+asm program passing structs (ABI validation)
 
-    Warning-free builds with -Wall -Wextra -Werror
+**PAD**
 
-    Reproducibility: make asan runs tests and fails on UB presence
+* **PAD-4:** ABI notes with stack diagrams + comparative micro-benchmarks
 
-Block 3 — Systems C I: memory, pointers, and I/O
+**Success criteria**
 
-Duration: 8 weeks
-Goal: master memory and pointers, low-level I/O, and safe patterns in C.
+* Binaries pass tests; benchmark deltas are repeatable and documented
 
-Content
+---
 
-    Pointers, arithmetic, const, restrict, function pointers
+## 5B01 — Linking, Loading & Formats (ELF, PLT/GOT, LD\_PRELOAD)
 
-    Structures, unions, and bitfields; alignment and padding
+**Duration:** 4 weeks · **Goal:** understand loader symbol resolution and non-intrusive userland interception.
 
-    Dynamic memory: malloc/calloc/realloc/free, ownership, simple arenas
+**Content**
 
-    Errors and errno; function contracts and preconditions
+* ELF: header; sections vs segments; relocations; symbols
+* Static/dynamic linking; PIC/PIE; PLT/GOT; lazy binding
+* Tools: `ldd`, `patchelf`, `objdump`, `readelf`
+* Shared libraries: creation & symbol visibility
+* **LD\_PRELOAD:** non-invasive hooking of standard functions
+* PE vs ELF (high level) to prep future transitions
 
-    I/O: stdio vs syscalls (open/read/write), buffers, mmap
+**PBR**
 
-    Binary files and safe parsing
+* **PBR-5.1:** Minimal **ELF parser** listing sections & symbols
+* **PBR-5.2:** Shared library hook for `fopen/open` (LD\_PRELOAD) with logging
+* **PBR-5.3:** Manual relocation PoC: controlled `rpath/runpath` change via `patchelf`
 
-    Intro to TCP/UDP sockets and blocking vs non-blocking
+**PAD**
 
-    Security: bounds, off-by-one, format, double-free, use-after-free; mitigation strategies
+* **PAD-5:** Linking architecture report; before/after symbol tables with evidence
 
-PBR
+**Success criteria**
 
-    Custom hexdump with offset and ASCII support
+* Functional hook that does **not** break basic target apps
+* Parser passes tests against sample binaries
 
-    Safe string library (subset) with tests
+---
 
-    Mini binary viewer (header + first sections) using mmap
+## EX0B01 — Express Module: Minimal Lab OPSEC (parallel, \~1 week total)
 
-PAD
+**Goal:** avoid metadata leaks and preserve reproducibility.
 
-    Function specs, contracts, and test cases
+**Content**
 
-    Threat report and mitigations for your utilities
+* Project compartmentalization; artifact control; `strip` where appropriate
+* Reproducible metadata: `SOURCE_DATE_EPOCH`, timestamps (concepts), FileVersionInfo (conceptual)
+* Artifact usage policies + minimal docs
 
-Success criteria
+**Deliverable**
 
-    Automated tests covering common failures
+* **OPSEC checklist** signed and applied to all Phase 1 repos
 
-    Clean sanitizers and valgrind free of leaks in planned scenarios
+---
 
-Block 4 — x86_64 architecture and ABI; practical assembly
+## Phase 1 — Grading Rubric
 
-Duration: 4 weeks
-Goal: understand how functions are called, how the stack behaves, and how to invoke syscalls.
-
-Content
-
-    Registers and SysV x86_64 calling convention; prologue/epilogue; nested calls
-
-    Stack frames, spill/fill, register preservation
-
-    System calls: numbers, syscall, errors, and errno
-
-    Inline asm in C; C ↔ asm integration
-
-    Windows x64 ABI vs SysV (conceptual differences)
-
-PBR
-
-    Assembly implementation of memset/memcmp with cross-tests against C
-
-    Minimal syscall wrapper (write, getpid) without libc
-
-    Mixed C+asm program passing structures, verifying ABI
-
-PAD
-
-    ABI notes with stack diagrams
-
-    Comparative benchmarks of your routines
-
-Success criteria
-
-    Binaries pass tests and show repeatable performance deltas
-
-Block 5 — Linking, loading, and formats (ELF, PLT/GOT, LD_PRELOAD)
-
-Duration: 4 weeks
-Goal: understand how the loader resolves symbols and how to intercept calls in userland.
-
-Content
-
-    ELF: header, sections vs segments, relocations, symbols
-
-    Static/dynamic linking; PIC/PIE; PLT/GOT and lazy binding
-
-    Tools: ldd, patchelf, objdump, readelf
-
-    Shared libraries: creation and symbol visibility
-
-    LD_PRELOAD: non-invasive hooking of standard functions
-
-    PE vs ELF (high level) to prepare future transition
-
-PBR
-
-    Minimal ELF parser listing sections and symbols
-
-    Shared library that hooks fopen/open to log access (LD_PRELOAD)
-
-    Manual relocation PoC: controlled rpath/runpath change using patchelf
-
-PAD
-
-    Linking architecture report for your binaries
-
-    Symbol tables before/after hooking with evidence
-
-Success criteria
-
-    Functional hook without breaking basic target apps
-
-    Parser passes test cases with sample binaries
-
-Express Module F1 — Minimal lab OPSEC
-
-Duration: 1 week (in parallel, spread across block endings)
-Goal: avoid metadata leaks and keep reproducibility.
-
-Content
-
-    Project-level compartmentalization, artifact control, and symbol stripping (strip)
-
-    Metadata: SOURCE_DATE_EPOCH, timestamps, FileVersionInfo (conceptual)
-
-    Artifact usage policies and minimal documentation
-
-Deliverable
-
-    OPSEC checklist signed and applied to all Phase 1 repos
-
-Phase 1 grading rubric
-
-    A: All PBR/PAD completed; sanitizers and valgrind clean; functional hooking; clear docs; one-command reproducibility.
-
-    B: ≥80% PBR/PAD; minor sanitizer issues; sufficient documentation.
-
-    C: ≥60% PBR/PAD; partial reproducibility; test coverage gaps.
-
-    Redo: <60% or critical security/stability failures.
+* **A:** All PBR/PAD complete; sanitizers & `valgrind` clean; functional LD\_PRELOAD hook; clear docs; one-command reproducibility
+* **B:** ≥80% PBR/PAD; minor sanitizer issues; sufficient documentation
+* **C:** ≥60% PBR/PAD; partial reproducibility; test-coverage gaps
+* **Redo:** <60% or critical security/stability failures
