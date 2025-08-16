@@ -1,175 +1,149 @@
-PENSUM — Applied Analysis and RCE — Blocks and Deliverables
 
-    Estimated coverage: ~03/2026 → ~07/2026 (adjustable based on Phase 1 progress)
-    Planned dedication: 5 h/day (Mon–Sat)
-    Methodology: PBR (reproducible labs) + PAD (analysis and documentation)
+# PENSUM — Applied Analysis & RCE (Phase 2) — Blocks & Deliverables
 
-Vision
+> **Estimated coverage:** \~03/2026 → \~07/2026 *(adjust to Phase 1 finish)*
+> **Time commitment:** 5 h/day (Mon–Sat)
+> **Methodology:** **PBR** (reproducible labs) + **PAD** (analysis & documentation) · OPSEC/Legal applied *(lab-only, benign payloads)*
 
-Consolidate applied reversing and the first userland execution paths. Here I learn to understand real binaries (static/dynamic), unpack simple layers, and build loaders that stage payloads in memory using classic injection techniques while accounting for modern mitigations.
+## Vision
 
-Phase 2 outputs
+Consolidate applied reversing and first userland execution paths. You’ll analyze real binaries (static/dynamic), perform single-layer manual unpacking with minimal IAT reconstruction, and build memory loaders that use classic injection techniques—while understanding modern mitigations.
 
-    Reversing report for a real binary (with light obfuscation) and a reproducible unpack.
+## Phase 2 — Global Outputs
 
-    PE parser and custom analysis utilities.
+* Reversing report for a real binary (light obfuscation) with **reproducible** unpack.
+* **PE parser** + auxiliary analysis utilities.
+* Userland loader with **≥2** execution techniques.
+* Intro **process hollowing** PoC in lab.
+* Disciplined documentation (PAD) + curated evidence for bug bounty.
 
-    Userland loader with at least two execution techniques.
+## Relation to other phases/modules
 
-    Intro lab process hollowing PoC.
+* Close **B8** with controlled in-memory execution.
+* **Phase 3** follows (internals & exploitation, userland→kernel).
+* **8A/8B** are inserted **before Phase 4** as the pre-flight for evasion/C2 (Initial Access + Minimum Blue Track).
 
-    Documentation discipline and evidence packaged for bug bounty.
+---
 
-Relation to future modules
+## 0B04 — Applied Reversing I: Tooling, Methodology & Basic Unpacking
 
-    After Block 8, insert 8A (Initial Access) and 8B (Minimum Blue Track) before moving into deep Evasion/Obfuscation (Block 9 and 9B).
+**Duration:** 6 weeks · **Goal:** master a static/dynamic pipeline (Ghidra/IDA Free, rizin/Cutter, x64dbg/WinDbg), handle trivial anti-analysis, and perform single-layer manual unpacking (e.g., UPX) with minimal **IAT** reconstruction.
 
-Block 6 — Applied Reversing I: tooling, methodology, and basic unpacking
+**Content**
 
-Duration: 6 weeks
-Goal: master a static/dynamic pipeline with Ghidra/IDA and x64dbg/WinDbg, identify trivial anti-analysis, and perform manual single-layer unpacking (UPX or similar) with minimal IAT reconstruction.
+* **Static:** strings/signatures, CFG, calling conventions, struct recovery, common patterns.
+* **Dynamic:** breakpoints, memory map, dump & patch, basic relocations; debugger pitfalls.
+* **Anti-analysis (intro):** `IsDebuggerPresent`, PEB `BeingDebugged`, timing checks; safe bypasses in lab.
+* **Packers 101:** UPX/variants; OEP discovery; minimal **IAT** reconstruction (tooling or scripts).
+* **Support scripting:** Python for parsers/decoders and dump automation.
 
-Content
+**PBR**
 
-    Tools: Ghidra/IDA (free), rizin/Cutter, x64dbg/WinDbg.
+* **PBR-0.1:** Reversing report (small binary w/ obfuscated strings): function map, flows, decision points.
+* **PBR-0.2:** Manual unpack (UPX or similar): **clean dump** + reconstructed **IAT**; hash comparison; debugger loads.
+* **PBR-0.3:** String/config decoder (simple XOR/RC4) with unit tests.
 
-    Static: strings/signatures, control-flow graph (CFG), calling conventions, struct recovery, common patterns.
+**PAD**
 
-    Dynamic: breakpoints, memory map, dump & patch, basic relocations; common debugger pitfalls.
+* **PAD-0:** Methodology (step-by-step), screenshots, before/after checksums, issues & mitigations.
 
-    Simple anti-analysis: IsDebuggerPresent, PEB BeingDebugged, time checks; basic bypasses.
+**Success criteria**
 
-    Packers 101: UPX and variants; finding the OEP; IAT reconstruction via tools or custom scripts.
+* Executable dump without crashes; **functional IAT**; feasible static analysis on the result.
+* Report is reproducible by third parties using your repo/lab.
 
-    Support scripting: Python for small utilities (parsers, decoders) and dump automation.
+---
 
-PBR
+## 1B04 — Deep PE, Windows API & In-Memory Loaders
 
-    Reversing report for a small binary with obfuscated strings: key function map, flow, and decision points.
+**Duration:** 5 weeks · **Goal:** understand **PE** in practice (headers, sections, imports/exports, relocations, TLS) and build loaders that execute benign payloads in memory, progressing to **basic manual mapping**.
 
-    Manual unpack of a packed sample (UPX or similar): clean dump and reconstructed IAT; hash comparison and debugger load.
+**Content**
 
-    String/config decoding script (simple XOR/RC4) with unit tests.
+* **PE fundamentals:** DOS/NT headers, **sections**, imports/exports, relocations, TLS callbacks. *(Use “sections”; “segments” are ELF terminology.)*
+* **Proc/threads/memory API:** `VirtualAlloc{Ex}`, `WriteProcessMemory`, `Create{Remote}Thread`, `VirtualProtect` (and variants).
+* **Minimal loader:** allocate & copy payload, set permissions, controlled jump, cleanup & error handling.
+* **Basic manual map:** load a **minimal DLL** without `LoadLibrary` (selective import resolution, essential relocations, no advanced TLS).
+* **Safety & bugs:** permissions/offsets/alignment; avoiding silent crashes.
+* **Inspection:** Process Hacker, PE-bear, PE-sieve for validation.
 
-PAD
+**PBR**
 
-    Step-by-step methodology, screenshots, checksums before/after, issues and mitigations.
+* **PBR-1.1:** **PE parser**: print key headers, sections, imports; simple integrity checks.
+* **PBR-1.2:** Benign shellcode loader in **local** process with cleanup & robust errors.
+* **PBR-1.3:** Intro **manual map** of a minimal DLL + execution of an exported function.
 
-Success criteria
+**PAD**
 
-    Executable dump without crashes, functional IAT, and feasible static analysis on the result.
+* **PAD-1:** Loader design, memory diagrams, risks, and tests with strong error handling.
 
-    Clear report reproducible by third parties using your repo/lab.
+**Success criteria**
 
-Block 7 — Deep PE, Windows API, and in-memory loaders
+* Stable loader that runs benign payloads in lab (no external AV reliance).
+* Functional manual map for a controlled DLL with clear execution evidence.
 
-Duration: 5 weeks
-Goal: understand PE at a practical level (headers, sections, imports/exports, relocations, TLS) and build loaders that execute payloads in memory, starting with benign shellcode and progressing to basic manual mapping.
+---
 
-Content
+## 2B04 — Userland Execution Paths & Modern Mitigations
 
-    PE: DOS/NT headers, sections vs segments, imports/exports, relocations, TLS callbacks; PE vs ELF differences.
+**Duration:** 5 weeks · **Goal:** implement 2–3 classic userland techniques and understand DEP/ASLR/CFG and handle/process policies; prepare ground for evasion and **8A**.
 
-    Windows processes/threads/memory: VirtualAlloc{Ex}, WriteProcessMemory, Create{Remote}Thread, VirtualProtect and variants.
+**Content**
 
-    Minimal loader: allocation and copy of payload, permission changes, controlled jump.
+* **Classic injection:** `CreateRemoteThread` + `LoadLibrary`.
+* **APC queueing:** including early-bird; synchronization/failure points.
+* **Process hollowing (intro)** vs module stomping (differences & trade-offs).
+* **Staging options:** PPID spoofing; relevant `CreateProcess` flags (lab only).
+* **Light obfuscation:** dynamic API resolution by hash; string hiding.
+* **Mitigations & surfaces:** DEP/ASLR/CFG, signing, antimalware, common detection surfaces.
+* **Syscalls (intro):** for basic ops only (no deep unhooking in Phase 2).
 
-    Basic manual mapping: load a DLL in memory without LoadLibrary (selected import resolution, essential relocations, no advanced TLS).
+**PBR**
 
-    Safety and common bugs: permissions, offsets, alignment, silent crashes.
+* **PBR-2.1:** Multi-mode loader (CLI selector: **CRT+LL** / **APC**) with controlled logging.
+* **PBR-2.2:** **Hollowing PoC** against a lab binary with evidence & **safe rollback**.
+* **PBR-2.3:** **Trace comparison**: artifact deltas per technique under a fixed checklist.
 
-    Inspection tools: Process Hacker, PE-bear, PE-sieve for lab validation.
+**PAD**
 
-PBR
+* **PAD-2:** Analysis of encountered mitigations, detection surfaces, and improvement plan toward **Phase 3** / **8A/8B**.
 
-    PE parser: print key headers, sections, and imports; simple integrity checks.
+**Success criteria**
 
-    Benign shellcode loader in a local process (not remote) with error handling and cleanup.
+* At least **two** techniques work reproducibly in the lab.
+* Comparative report with full evidence and checklists.
 
-    Intro manual map of a minimal DLL and execution of an exported function.
+---
 
-PAD
+## EX0B01 — Express Module F2 (in parallel to 0B04–2B04)
 
-    Loader design, memory diagrams, risks, and tests with robust error handling.
+**Duration:** \~1 effective week (1–2 h slots) · **Goal:** accelerate analysis/testing with custom utilities.
 
-Success criteria
+**Content & Deliverable**
 
-    Stable loader that runs benign payloads without external AV in the lab.
+* Parsing scripts (PE/ELF), string/config extractors.
+* Loader harness (in/out, logs, timers) + test dataset.
+* **PBR-EX.1:** Versioned `tools/` folder with documented scripts & basic tests.
+* **PAD-EX:** Short usage notes & limits.
 
-    Functional manual map for a controlled DLL with execution evidence.
+---
 
-Block 8 — Userland execution paths and modern mitigations
+## Phase 2 — Grading Rubric
 
-Duration: 5 weeks
-Goal: implement 2–3 classic userland injection/execution techniques and understand the impact of DEP/ASLR/CFG and handle-management policies. Prepare the ground for Evasion/Obfuscation and the 8A Initial Access module.
+* **A:** Reversing report with clean unpack; **usable PE parser**; loader with **≥2** techniques; stable hollowing PoC; reproducible docs.
+* **B:** ≥80% PBR/PAD; one unstable technique or limited parser; documentation sufficient.
+* **C:** ≥60% PBR/PAD; partial reproducibility.
+* **Redo:** <60% or severe instability in loaders/injection.
 
-Content
+---
 
-    Classic injection: CreateRemoteThread + LoadLibrary.
+### OPSEC/Legal (always)
 
-    APC queueing (including early-bird) and synchronization considerations.
+Lab-only, benign payloads, explicit consent for targets in controlled environments, and evidence handling with minimal metadata. Telemetry is for **measurement**, not for evading real-world defenses.
 
-    Intro process hollowing and differences vs module stomping.
+**Key fixes made**
 
-    PPID spoofing and relevant CreateProcess options for staging in lab.
-
-    Light obfuscation: dynamic API resolution by hash, string hiding.
-
-    Mitigations: DEP/ASLR/CFG, lab signing/antimalware; common detection surfaces.
-
-    Intro to syscalls for basic operations (no deep unhooking yet; that comes later).
-
-PBR
-
-    Multi-mode loader: technique selected via CLI (at least CRT+LL and APC) with controlled logging.
-
-    Hollowing PoC against a lab binary with evidence and safe rollback.
-
-    Trace comparison: run each technique under your checklist and document artifact deltas.
-
-PAD
-
-    Analysis of encountered mitigations, detection surfaces, and improvement plan for Phase 3/8A/8B.
-
-Success criteria
-
-    Two techniques working reproducibly in the lab.
-
-    Comparative report with evidence and complete checklists.
-
-Express Module F2 — Automation and auxiliary tooling
-
-Duration: 1 week (in parallel, spread across B6–B8)
-Goal: accelerate analysis and testing with custom Python/C utilities.
-
-Content
-
-    Parsing scripts (PE/ELF) and string/config extractors.
-
-    Test harness for loaders (in/out, logs, timers).
-
-    Test dataset generation and evidence repos.
-
-Deliverable
-
-    Versioned tools/ folder with documented scripts and basic tests.
-
-Phase 2 grading rubric
-
-    A: Reversing report with clean unpack, usable PE parser, loader with ≥2 techniques, stable hollowing PoC, reproducible documentation.
-
-    B: ≥80% of PBR/PAD, one unstable technique or incomplete parser, sufficient documentation.
-
-    C: ≥60% of PBR/PAD, partial reproducibility issues.
-
-    Redo: <60% or severe instability in loaders/injection.
-
-Bridge to Phase 3 and modules 8A/8B
-
-    With B8 you finish with controlled in-memory execution.
-
-    8A will add realistic Initial Access (maldocs, LNK/HTA/JS, AMSI, LOLBins, WMI)
-
-    8B will measure your techniques via telemetry (Sysmon/ETW, YARA/Sigma, KQL).
-
-    Phase 3 goes deeper into internals and userland/kernel exploitation, building on your loaders.
+* Replaced “sections vs segments” under PE with PE-correct **sections** (kept ELF contrast separate).
+* Standardized codes (**0B04/1B04/2B04**) and **PBR/PAD** numbering.
+* Clarified module order: **Phase 3** comes after B8; **8A/8B** are a pre-flight to Phase 4.
+* Tightened goals/success criteria; reiterated **lab-only** scope.
