@@ -92,7 +92,7 @@ Achieve professional competence in **Reverse Engineering** and **Malware Develop
 
 **Financial goal**
 
-* Operating target: **USD 18,000–36,000** during the bug bounty window (2026-09-21 → 2027-07-21) to support living expenses and studies.
+* Operating target: **USD 8,000–18000,000** during the bug bounty window (2026-09-21 → 2027-07-21) to support living expenses and studies.
 * Cushion of 3–4 months’ expenses; logging and post-mortems for each case.
 
 ---
