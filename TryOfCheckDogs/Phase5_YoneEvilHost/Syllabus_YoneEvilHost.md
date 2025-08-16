@@ -199,9 +199,3 @@
 * **B:** ≥80% PBR/PAD; one unstable area but documented; functional Capstone.
 * **C:** ≥60% PBR/PAD; partial reproducibility or weak blue validation.
 * **Redo:** <60% or operational risk (no proven rollback).
-
----
-
-## Dependencies & suggested order
-
-Pre-flight → **B1 (Linux)** → **B2 (Windows)** → **B3 (Lab “rootkit” patterns, detectable)** → **B4 (UEFI)** → **B5 (Bootflow)** → **F5-CAP**.
