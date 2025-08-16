@@ -5,26 +5,7 @@
 > **Time commitment:** 5 h/day (Mon–Sat)
 > **Methodology:** **PBR** (reproducible labs) + **PAD** (analysis & documentation)
 > **Ethical scope:** **lab-only**, under explicit **OPSEC/Legal** controls. Training purposes only.
-
-## Index
-
-1. [Bridge to Phase 4 (pre-flight, 1–2 weeks)](#bridge-to-phase-4-pre-flight-1–2-weeks)
-2. [Phase 4 — Vision & expected outputs](#phase-4—vision--expected-outputs)
-3. [8A — Initial Access & Covert Delivery (1–2 weeks)](#8a—initial-access--covert-delivery-1–2-weeks)
-4. [8B — Minimal Blue Track (1 week)](#8b—minimal-blue-track-1-week)
-5. [F4-B1 — Evasion I: anti-analysis & detection surface (3 weeks)](#f4-b1—evasion-i-anti-analysis--detection-surface-3-weeks)
-6. [F4-B2 — Evasion II: advanced userland injection (3 weeks)](#f4-b2—evasion-ii-advanced-userland-injection-3-weeks)
-7. [9B — Implant crypto & Packer v2 (2 weeks)](#9b—implant-crypto--packer-v2-2-weeks)
-8. [F4-B3 — Cross-platform persistence (3 weeks)](#f4-b3—cross-platform-persistence-3-weeks)
-9. [F4-B4 — Covert C2 & traffic profiling (3 weeks)](#f4-b4—covert-c2--traffic-profiling-3-weeks)
-10. [F4-B5 — Covert ops & controlled movement (2 weeks)](#f4-b5—covert-ops--controlled-movement-2-weeks)
-11. [Extensions 12A–12F (optional)](#extensions-12a–12f-optional)
-12. [Express Module — OPSEC/Legal (3–5 days)](#express-module—opsecl-legal-3–5-days)
-13. [F4-CAP — Phase 4 Capstone (2–3 weeks)](#f4-cap—phase-4-capstone-2–3-weeks)
-14. [Rubric — Phase 4](#rubric—phase-4)
-15. [Dependencies & suggested order](#dependencies--suggested-order)
-16. [Outcome](#outcome)
-
+> 
 ---
 
 ## Bridge to Phase 4 (pre-flight, 1–2 weeks)
