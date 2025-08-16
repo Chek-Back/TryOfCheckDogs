@@ -11,13 +11,13 @@ Linux/CLI, Bash, toolchain (Git/Make, debuggers, sanitizers), systems C (memory,
 [Phase2_IBM1401](./Phase2_IBM1401/Syllabus_IBM1401.md) — Applied analysis and first execution paths (RCE)
 Applied reversing (static/dynamic), initial anti-analysis, basic manual unpack; deep PE, in-memory loaders (benign shellcode/local, introductory manual mapping); userland injection (CRT+LL, APC, basic hollowing) and mitigations (DEP/ASLR/CFG). Outcome: reversing report, PE parser, loader with ≥2 techniques.
 
-Phase 3 — Advanced RE and OS internals + userland exploitation
+[Phase3_Intel4004](./Phase3_Intel4004/Syllabus_Intel4004.md) — Advanced RE and OS internals + userland exploitation
 Process internals (PEB/TEB, regions, TLS), ROP/JOP with info-leak (Win/Linux), didactic heap exploitation (LFH vs glibc), kernel/driver fundamentals on Windows (IOCTL/IRP) and local elevation in VM. Outcome: 2 userland exploits, RW primitive via a vulnerable driver, and Capstone F3 (userland → SYSTEM in lab).
 
-Phase 4 — Evasion, persistence, and C2 operations
+[Phase4_Univac1108](./Phase4_Univac1108/Syllabus_Univac1108.md) — Evasion, persistence, and C2 operations
 8A Initial Access (maldocs, LNK/HTA/JS, AMSI, LOLBins/WMI) · 8B Blue Track (Sysmon/ETW, YARA/Sigma, KQL) · Userland evasion (anti-analysis, dynamic resolution, direct syscalls, APC/module-stomping) · 9B Crypto/packer v2 (AEAD, light mutation) · Multi-OS persistence (Win/Linux/macOS) · C2 with realistic traffic profile and covert lab operations. Outcome: validated operational chain and Capstone F4 (96 h in lab with blue evaluation).
 
-Phase 5 — Kernel, firmware, and boot (final)
+[Phase5_YoneEvilHost](./Phase5_YoneEvilHost/Syllabus_YoneEvilHost.md) — Kernel, firmware, and boot (final)
 Linux kernel (LKMs, kprobes/ftrace), Windows kernel (callbacks, IOCTL/IRP), lab-only rootkit-style PoCs (reversible and detectable), UEFI/OVMF and a benign DXE, bootflow and Secure Boot on/off comparison. Outcome: Capstone F5 integrating kernel + firmware with technical defense and tested rollback.
 2) Quarter overview (4 months per time block)
 
