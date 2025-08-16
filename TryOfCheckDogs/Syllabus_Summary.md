@@ -5,10 +5,10 @@ PENSUM — Phase and Quarter Overview (TOCD)
 
 1) Phase summary (brief description)
 
-Phase 1 — Systems and programming fundamentals
+[Phase1 – ENIAC](./Phase1_Eniac/Syllabus_Eniac.md) — Systems and programming fundamentals
 Linux/CLI, Bash, toolchain (Git/Make, debuggers, sanitizers), systems C (memory, pointers, I/O), x86_64/ABI and basic assembly, linking/loading (ELF, PLT/GOT), LD_PRELOAD. Outcome: low-level operational fluency and in-house utilities.
 
-Phase 2 — Applied analysis and first execution paths (RCE)
+[Phase2_IBM1401](./Phase2_IBM1401/Syllabus_IBM1401.md) — Applied analysis and first execution paths (RCE)
 Applied reversing (static/dynamic), initial anti-analysis, basic manual unpack; deep PE, in-memory loaders (benign shellcode/local, introductory manual mapping); userland injection (CRT+LL, APC, basic hollowing) and mitigations (DEP/ASLR/CFG). Outcome: reversing report, PE parser, loader with ≥2 techniques.
 
 Phase 3 — Advanced RE and OS internals + userland exploitation
